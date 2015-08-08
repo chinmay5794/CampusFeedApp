@@ -1,5 +1,6 @@
 package com.campusfeedapp.campusfeed;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.content.res.Configuration;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -15,6 +16,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends FragmentActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -25,7 +29,7 @@ public class MainActivity extends FragmentActivity {
 
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
-    private String[] mDrawerItmes;
+    private List<String> mDrawerItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,22 +37,25 @@ public class MainActivity extends FragmentActivity {
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_main);
 
-        mTitle = mDrawerTitle = getTitle();
+        initializeDrawerItemList();
+        mTitle = mDrawerTitle = mDrawerItems.get(0);
+        getActionBar().setTitle(mTitle);
 
-        mDrawerItmes = getResources().getStringArray(R.array.drawer_titles);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerList = (ListView) findViewById(R.id.list_view);
 
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,  GravityCompat.START);
 
         // Add items to the ListView
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mDrawerItmes));
+        mDrawerList.setAdapter(new DrawerAdapter(this, mDrawerItems));
         // Set the OnItemClickListener so something happens when a
         // user clicks on an item.
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         // Enable ActionBar app icon to behave as action to toggle the NavigationDrawer
+        getActionBar().setIcon(
+                new ColorDrawable(getResources().getColor(android.R.color.transparent)));
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
@@ -60,12 +67,10 @@ public class MainActivity extends FragmentActivity {
                 R.string.drawer_close
         ) {
             public void onDrawerClosed(View view) {
-                getActionBar().setTitle(mTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu
             }
 
             public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle(mDrawerTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu
             }
         };
@@ -79,6 +84,16 @@ public class MainActivity extends FragmentActivity {
         }
 
     }
+
+    private void initializeDrawerItemList(){
+        mDrawerItems = new ArrayList<String>();
+        mDrawerItems.add("Home");
+        mDrawerItems.add("Channels I own");
+        mDrawerItems.add("Discover Channels");
+        mDrawerItems.add("Add a post");
+        mDrawerItems.add("Logout");
+    }
+
 
     /*
      * If you do not have any menus, you still need this function
@@ -114,6 +129,7 @@ public class MainActivity extends FragmentActivity {
     private class DrawerItemClickListener implements OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            getActionBar().setTitle(mDrawerItems.get(position));
             navigateTo(position);
         }
     }
@@ -129,12 +145,6 @@ public class MainActivity extends FragmentActivity {
 
         }
         mDrawerLayout.closeDrawer(mDrawerList);
-    }
-
-    @Override
-    public void setTitle(CharSequence title) {
-        mTitle = title;
-        getActionBar().setTitle(mTitle);
     }
 
 }

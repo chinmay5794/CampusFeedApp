@@ -3,6 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:windowActionBar">true</item>
     </style>
 
     <style name="TextViewAppearance" parent="@android:style/TextAppearance.Widget.TextView">
@@ -63,6 +64,34 @@
         <item name="android:textColor">@drawable/selector_text_full</item>
     </style>
     <!-- Button related styles end here -->
+
+    <style name="AppTheme.Title" parent="Theme.AppCompat">
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
+
+    <style name="ListViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/main_color_grey_100</item>
+        <item name="android:cacheColorHint">@android:color/transparent</item>
+        <item name="android:choiceMode">singleChoice</item>
+        <item name="android:divider">@android:color/transparent</item>
+        <item name="android:dividerHeight">0dp</item>
+    </style>
+
+    <style name="RippleStyle">
+        <item name="rippleOverlay">true</item>
+        <item name="rippleColor">@color/main_color_grey_300</item>
+        <item name="rippleAlpha">0.7</item>
+        <item name="rippleDimension">45dp</item>
+        <item name="rippleHover">true</item>
+        <item name="rippleDuration">200</item>
+        <item name="rippleFadeDuration">50</item>
+        <item name="rippleBackground">@android:color/transparent</item>
+        <item name="rippleDelayClick">true</item>
+        <item name="ripplePersistent">false</item>
+        <item name="rippleInAdapter">false</item>
+    </style>
 
 
 </resources>
