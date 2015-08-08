@@ -57,7 +57,7 @@ public class TabbedFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
 
         @Override
@@ -70,6 +70,8 @@ public class TabbedFragment extends Fragment {
                     return getString(R.string.title_section2).toUpperCase(l);
                 case 2:
                     return getString(R.string.title_section3).toUpperCase(l);
+                case 4:
+                    return getString(R.string.title_section4).toUpperCase(l);
             }
             return null;
         }
