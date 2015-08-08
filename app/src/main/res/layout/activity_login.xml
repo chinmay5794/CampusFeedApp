@@ -106,7 +106,8 @@
                 android:minWidth="96dp"
                 android:text="LOGIN"
                 android:textColor="@color/main_color_grey_700"
-                app:typeface="robotoMedium" />
+                app:typeface="robotoMedium"
+                />
         </LinearLayout>
     </LinearLayout>
 

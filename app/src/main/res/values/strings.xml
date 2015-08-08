@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string-array name="drawer_titles">
+        <item>Tabs</item>
+        <item>WebView</item>
+    </string-array>
+
+
     <string name="app_name">Campusfeed</string>
     <string name="action_settings">Settings</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <string name="sign_up"><u><font color="#ff0000">Sign up!</font></u></string>
+    <string name="sign_up"><u>Sign up!</u></string>
 
     <!-- Navigation Drawer icon codes -->
     <string name="drawer_icon_splash_screens">&#xe82c;</string>
@@ -137,5 +147,8 @@
 
     <!-- For Update -->
     <string name="confirm_exit">Press Back button again to exit</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 
 </resources>
