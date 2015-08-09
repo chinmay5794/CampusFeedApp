@@ -10,10 +10,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.webkit.WebViewFragment;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -140,7 +138,16 @@ public class MainActivity extends FragmentActivity {
             case 0:
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.content_frame, TabbedFragment.newInstance(), TabbedFragment.TAG).commit();
+                        .replace(R.id.content_frame, HomeFragment.newInstance(), HomeFragment.TAG).commit();
+                break;
+            case 1:
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, MyChannelsFragment.newInstance(), MyChannelsFragment.TAG).commit();
+            case 2:
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, DiscoverChannelsFragment.newInstance(), DiscoverChannelsFragment.TAG).commit();
                 break;
 
         }
