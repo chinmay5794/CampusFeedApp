@@ -137,21 +137,13 @@ public class DiscoverChannelsFragment extends Fragment {
             ListView channelListView = (ListView) rootView.findViewById(R.id.list_view);
             channelListView.setAdapter(channelListAdapter);
 
-            final HTTPGetAsyncTask httpGetAsyncTask = new HTTPGetAsyncTask(getActivity().getBaseContext(),true);
-            httpGetAsyncTask.setHTTPCompleteListener(new OnHTTPCompleteListener() {
-                @Override
-                public void onHTTPDataReceived(String result, String url) {
-                    
-                    Intent intent = new Intent(getActivity(),ChannelPostsActivity.class);
-
-                }
-            });
-
             channelListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     String channelID = channelListAdapter.mChannelList.get(position).getChannelID();
-                    httpGetAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,Constants.URL_GET_POSTS_OF_CHANNEL(channelID,String.valueOf(10),String.valueOf(0)));
+                    Intent intent = new Intent(getActivity(),ChannelPostsActivity.class);
+                    intent.putExtra(Constants.Keys.CHANNEL_ID,channelID);
+                    startActivity(intent);
                 }
             });
 
