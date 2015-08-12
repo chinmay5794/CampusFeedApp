@@ -1,4 +1,4 @@
-package com.campusfeedapp.campusfeed;
+package com.campusfeedapp.campusfeed.CustomViews;
 
 import android.content.Context;
 import android.graphics.Typeface;

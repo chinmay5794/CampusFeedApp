@@ -1,30 +1,15 @@
 package com.campusfeedapp.campusfeed;
 
-import android.app.ActionBar;
 import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.RectF;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.util.TypedValue;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
-import android.widget.Toast;
 
+import com.campusfeedapp.campusfeed.Adapters.PostListAdapter;
 import com.campusfeedapp.campusfeed.AsyncTasks.HTTPGetAsyncTask;
+import com.campusfeedapp.campusfeed.DTO.PostItemDTO;
 import com.campusfeedapp.campusfeed.Interfaces.OnHTTPCompleteListener;
-import com.campusfeedapp.campusfeed.R;
-import com.campusfeedapp.campusfeed.AlphaForegroundColorSpan;
-import com.campusfeedapp.campusfeed.KenBurnsView;
 import com.campusfeedapp.campusfeed.Utils.Constants;
 import com.google.gson.Gson;
 

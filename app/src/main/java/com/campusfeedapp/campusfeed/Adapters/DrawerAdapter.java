@@ -1,4 +1,4 @@
-package com.campusfeedapp.campusfeed;
+package com.campusfeedapp.campusfeed.Adapters;
 
 import java.util.List;
 import android.content.Context;

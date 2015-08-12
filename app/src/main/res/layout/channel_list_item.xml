@@ -35,7 +35,7 @@
             android:layout_weight="1"
             android:orientation="vertical" >
 
-            <com.campusfeedapp.campusfeed.RobotoTextView
+            <com.campusfeedapp.campusfeed.CustomViews.RobotoTextView
                 android:id="@+id/drag_and_drop_travel_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
                 android:textSize="16sp"
                 app:typeface="robotoLight" />
 
-            <com.campusfeedapp.campusfeed.RobotoTextView
+            <com.campusfeedapp.campusfeed.CustomViews.RobotoTextView
                 android:id="@+id/drag_and_drop_travel_subtext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
                 android:gravity="right|bottom"
                 android:padding="6dp" >
 
-                <com.campusfeedapp.campusfeed.MaterialDesignIconsTextView
+                <com.campusfeedapp.campusfeed.CustomViews.MaterialDesignIconsTextView
                     android:id="@+id/icon_friends"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                     android:textColor="@color/main_color_500"
                     android:textSize="22dp" />
 
-                <com.campusfeedapp.campusfeed.RobotoTextView
+                <com.campusfeedapp.campusfeed.CustomViews.RobotoTextView
                     android:id="@+id/drag_and_drop_travel_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

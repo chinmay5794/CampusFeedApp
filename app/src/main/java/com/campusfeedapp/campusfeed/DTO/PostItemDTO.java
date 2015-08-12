@@ -1,4 +1,4 @@
-package com.campusfeedapp.campusfeed;
+package com.campusfeedapp.campusfeed.DTO;
 
 import com.campusfeedapp.campusfeed.Utils.Constants;
 import com.google.gson.annotations.SerializedName;

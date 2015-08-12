@@ -1,4 +1,4 @@
-package com.campusfeedapp.campusfeed;
+package com.campusfeedapp.campusfeed.CustomViews;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -29,6 +29,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.campusfeedapp.campusfeed.R;
 
 /**
  * Created by SemonCat on 2014/6/2.

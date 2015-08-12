@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.campusfeedapp.campusfeed;
+package com.campusfeedapp.campusfeed.CustomViews;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -46,6 +46,8 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+
+import com.campusfeedapp.campusfeed.R;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 

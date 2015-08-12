@@ -90,7 +90,10 @@ public class Constants {
     public static String URL_CREATE_POST(String channelId) {
         return URL_ROOT + "/channels/" + channelId + "/posts";
     }
-    public static final String URL_GET_FEED = URL_ROOT + "/feed";
+
+    public static String URL_GET_FEED(String userId){
+        return URL_ROOT + "/user/" + userId + "/feed";
+    }
 
     public static String URL_EDIT_PROFILE(String userId){
         return URL_ROOT + "/users/" + userId;

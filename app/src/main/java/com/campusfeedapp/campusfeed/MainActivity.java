@@ -14,6 +14,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.campusfeedapp.campusfeed.Adapters.DrawerAdapter;
+import com.campusfeedapp.campusfeed.Fragments.DiscoverChannelsFragment;
+import com.campusfeedapp.campusfeed.Fragments.HomeFragment;
+import com.campusfeedapp.campusfeed.Fragments.MyChannelsFragment;
+
 import java.util.ArrayList;
 import java.util.List;
 

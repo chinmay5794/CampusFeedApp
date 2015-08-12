@@ -1,4 +1,4 @@
-package com.campusfeedapp.campusfeed;
+package com.campusfeedapp.campusfeed.Fragments;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,15 +11,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.campusfeedapp.campusfeed.Adapters.ChannelListAdapter;
 import com.campusfeedapp.campusfeed.AsyncTasks.HTTPGetAsyncTask;
+import com.campusfeedapp.campusfeed.ChannelPostsActivity;
+import com.campusfeedapp.campusfeed.DTO.ChannelItemDTO;
 import com.campusfeedapp.campusfeed.Interfaces.OnHTTPCompleteListener;
+import com.campusfeedapp.campusfeed.R;
 import com.campusfeedapp.campusfeed.Utils.Constants;
 import com.google.gson.Gson;
 

@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.campusfeedapp.campusfeed.AsyncTasks.HTTPPostAsyncTask;
+import com.campusfeedapp.campusfeed.CustomViews.FloatLabeledEditText;
+import com.campusfeedapp.campusfeed.CustomViews.RobotoTextView;
 import com.campusfeedapp.campusfeed.Interfaces.OnHTTPCompleteListener;
 import com.campusfeedapp.campusfeed.Utils.Constants;
 
@@ -38,6 +40,7 @@ public class LoginActivity extends ActionBarActivity {
                     e.printStackTrace();
                 }
                 Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                intent.putExtra(Constants.Keys.USER_ID,etUsername.getText().toString());
                 startActivity(intent);
             }
         });

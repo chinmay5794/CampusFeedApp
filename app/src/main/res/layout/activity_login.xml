@@ -21,7 +21,7 @@
         android:layout_marginTop="22dp"
         android:id="@+id/llt_misc_form">
 
-        <com.campusfeedapp.campusfeed.RobotoTextView
+        <com.campusfeedapp.campusfeed.CustomViews.RobotoTextView
             android:id="@+id/top_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical" >
 
-            <com.campusfeedapp.campusfeed.MaterialDesignIconsTextView
+            <com.campusfeedapp.campusfeed.CustomViews.MaterialDesignIconsTextView
                 style="@style/TextViewAppearance.Title1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
                 android:textColor="@color/main_color_grey_300"
                 android:textSize="22dp" />
 
-            <com.campusfeedapp.campusfeed.FloatLabeledEditText
+            <com.campusfeedapp.campusfeed.CustomViews.FloatLabeledEditText
                 android:id="@+id/field1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
                 app:fletSingleLine="true"
                 app:fletTextBackground="@drawable/edit_text_background_accent"
                 app:fletTextColor="@color/main_color_grey_700" >
-            </com.campusfeedapp.campusfeed.FloatLabeledEditText>
+            </com.campusfeedapp.campusfeed.CustomViews.FloatLabeledEditText>
         </LinearLayout>
 
         <LinearLayout
@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical" >
 
-            <com.campusfeedapp.campusfeed.MaterialDesignIconsTextView
+            <com.campusfeedapp.campusfeed.CustomViews.MaterialDesignIconsTextView
                 style="@style/TextViewAppearance.Title1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                 android:textColor="@color/main_color_grey_300"
                 android:textSize="22dp" />
 
-            <com.campusfeedapp.campusfeed.FloatLabeledEditText
+            <com.campusfeedapp.campusfeed.CustomViews.FloatLabeledEditText
                 android:id="@+id/field2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
                 app:fletSingleLine="true"
                 app:fletTextBackground="@drawable/edit_text_background_accent"
                 app:fletTextColor="@color/main_color_grey_700" >
-            </com.campusfeedapp.campusfeed.FloatLabeledEditText>
+            </com.campusfeedapp.campusfeed.CustomViews.FloatLabeledEditText>
         </LinearLayout>
 
         <LinearLayout
@@ -96,7 +96,7 @@
             android:layout_marginTop="12dp"
             android:gravity="right" >
 
-            <com.campusfeedapp.campusfeed.RobotoTextView
+            <com.campusfeedapp.campusfeed.CustomViews.RobotoTextView
                 android:id="@+id/submit_btn"
                 style="@style/ButtonStyle.RaisedEmpty"
                 android:layout_width="wrap_content"

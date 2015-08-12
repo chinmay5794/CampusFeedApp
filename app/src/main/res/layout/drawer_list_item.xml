@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.campusfeedapp.campusfeed.MaterialRippleLayout
+<com.campusfeedapp.campusfeed.CustomViews.MaterialRippleLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.campusfeedapp.campusfeed"
     style="@style/RippleStyle"
@@ -15,7 +15,7 @@
             android:paddingBottom="4dp"
             android:paddingTop="4dp" >
 
-                <com.campusfeedapp.campusfeed.RobotoTextView
+                <com.campusfeedapp.campusfeed.CustomViews.RobotoTextView
                     android:id="@+id/title"
                     style="@style/TextViewAppearance.Title1"
                     android:layout_width="match_parent"
@@ -26,4 +26,4 @@
                     app:typeface="robotoLight" />
         </LinearLayout>
 
-</com.campusfeedapp.campusfeed.MaterialRippleLayout>
+</com.campusfeedapp.campusfeed.CustomViews.MaterialRippleLayout>

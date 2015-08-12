@@ -1,4 +1,4 @@
-package com.campusfeedapp.campusfeed;
+package com.campusfeedapp.campusfeed.Adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.campusfeedapp.campusfeed.DTO.ChannelItemDTO;
+import com.campusfeedapp.campusfeed.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
