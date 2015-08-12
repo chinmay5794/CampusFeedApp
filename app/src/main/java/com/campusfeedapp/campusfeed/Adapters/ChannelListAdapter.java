@@ -59,7 +59,6 @@ public class ChannelListAdapter extends BaseAdapter {
         String itemName = mChannelList.get(position).getChannelName();
         Log.e("apple",itemName + " chao");
         Picasso.with(context).load(mChannelList.get(position).getImgUrl()).centerCrop().fit().into(holder.image);
-
         holder.text.setText(itemName);
 
         return convertView;

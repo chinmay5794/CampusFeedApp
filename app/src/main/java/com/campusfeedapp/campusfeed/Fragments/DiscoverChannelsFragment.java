@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,8 +145,10 @@ public class DiscoverChannelsFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     String channelID = channelListAdapter.mChannelList.get(position).getChannelID();
+                    String channelImgUrl = channelListAdapter.mChannelList.get(position).getImgUrl();
                     Intent intent = new Intent(getActivity(),ChannelPostsActivity.class);
                     intent.putExtra(Constants.Keys.CHANNEL_ID,channelID);
+                    intent.putExtra(Constants.Keys.CHANNEL_IMAGE_URL,channelImgUrl);
                     startActivity(intent);
                 }
             });

@@ -149,6 +149,7 @@ public class MainActivity extends FragmentActivity {
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_frame, MyChannelsFragment.newInstance(), MyChannelsFragment.TAG).commit();
+                break;
             case 2:
                 getSupportFragmentManager()
                         .beginTransaction()

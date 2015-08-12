@@ -1,10 +1,13 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <include layout="@layout/header_channel_desc"/>
 
+    <ListView
+        android:id="@+id/list_view"
+        style="@style/ListViewStyle" />
 
-    <include layout="@layout/list_view"/>
 
     <FrameLayout
         android:id="@+id/header"
@@ -13,4 +16,4 @@
 
     </FrameLayout>
 
-</merge>
+</RelativeLayout>

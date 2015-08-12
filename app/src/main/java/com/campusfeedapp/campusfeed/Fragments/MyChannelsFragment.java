@@ -1,13 +1,31 @@
 package com.campusfeedapp.campusfeed.Fragments;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
+import com.campusfeedapp.campusfeed.Adapters.ChannelListAdapter;
+import com.campusfeedapp.campusfeed.AsyncTasks.HTTPGetAsyncTask;
+import com.campusfeedapp.campusfeed.ChannelPostsActivity;
+import com.campusfeedapp.campusfeed.DTO.ChannelItemDTO;
+import com.campusfeedapp.campusfeed.Interfaces.OnHTTPCompleteListener;
 import com.campusfeedapp.campusfeed.R;
+import com.campusfeedapp.campusfeed.Utils.Constants;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -26,6 +44,8 @@ public class MyChannelsFragment extends Fragment {
 
     public static final String TAG = MyChannelsFragment.class.getSimpleName();
 
+    ChannelListAdapter channelListAdapter;
+    List<ChannelItemDTO> channelItemDTOList;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -43,7 +63,7 @@ public class MyChannelsFragment extends Fragment {
         return new MyChannelsFragment();
     }
 
-    private MyChannelsFragment() {
+    public MyChannelsFragment() {
         // Required empty public constructor
     }
 
@@ -60,7 +80,51 @@ public class MyChannelsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_channels, container, false);
+        View rootView =  inflater.inflate(R.layout.fragment_my_channels, container, false);
+        ListView listView = (ListView) rootView.findViewById(R.id.list_view);
+        channelItemDTOList = new ArrayList<ChannelItemDTO>();
+        channelListAdapter = new ChannelListAdapter(channelItemDTOList,getActivity().getBaseContext());
+        listView.setAdapter(channelListAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String channelID = channelListAdapter.mChannelList.get(position).getChannelID();
+                String channelImgUrl = channelListAdapter.mChannelList.get(position).getImgUrl();
+                Intent intent = new Intent(getActivity(),ChannelPostsActivity.class);
+                intent.putExtra(Constants.Keys.CHANNEL_ID,channelID);
+                intent.putExtra(Constants.Keys.CHANNEL_IMAGE_URL,channelImgUrl);
+                startActivity(intent);
+            }
+        });
+        fetchMyChannelsData();
+
+        return rootView;
+    }
+
+    private void fetchMyChannelsData(){
+        String userId = getActivity().getIntent().getExtras().getString(Constants.Keys.USER_ID);
+        HTTPGetAsyncTask httpGetAsyncTask = new HTTPGetAsyncTask(getActivity().getBaseContext(),true);
+        httpGetAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Constants.URL_GET_MY_CHANNELS(userId));
+        httpGetAsyncTask.setHTTPCompleteListener(new OnHTTPCompleteListener() {
+            @Override
+            public void onHTTPDataReceived(String result, String url) {
+                Log.e("pk", url);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    JSONArray jsonArray = jsonObject.getJSONArray(Constants.Keys.MY_CHANNELS);
+                    Log.e("apop",String.valueOf(jsonArray.length()));
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        Log.e("pkpi", jsonArray.get(i).toString());
+                        ChannelItemDTO channelItemDTO = new Gson().fromJson(jsonArray.get(i).toString(), ChannelItemDTO.class);
+                        channelListAdapter.mChannelList.add(channelItemDTO);
+                    }
+                    channelListAdapter.notifyDataSetChanged();
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override

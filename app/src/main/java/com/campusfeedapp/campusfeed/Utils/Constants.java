@@ -16,6 +16,7 @@ public class Constants {
         public static final String IS_LOGGED_IN = "is_logged_in";
         public static final String FOLLOWED_CHANNELS = "followed_channels";
         public static final String ALL_CHANNELS = "all_channels";
+        public static final String MY_CHANNELS = "my_channels";
         public static final String CHANNEL_ID = "channel_id";
         public static final String CHANNEL_NAME = "channel_name";
         public static final String CHANNEL_IMAGE_URL = "channel_img_url";
@@ -24,6 +25,7 @@ public class Constants {
         public static final String CHANNEL_CREATED_TIME = "created_time";
         public static final String CHANNEL_ADMINS = "admins";
         public static final String CHANNEL_POSTS = "posts";
+        public static final String CHANNEL_ADMIN_NAME = "full_name";
         public static final String POST_ID = "post_id";
         public static final String POST_IMAGE_URL = "img_url";
         public static final String POST_TIMESTAMP = "time";
@@ -66,7 +68,11 @@ public class Constants {
     public static final String URL_GET_ALL_CHANNELS = URL_ROOT + "/channels";
 
     public static String URL_GET_CHANNEL_DETAILS(String channelId) {
-        return URL_GET_ALL_CHANNELS + "?" + channelId;
+        return URL_GET_ALL_CHANNELS  + "/" + channelId;
+    }
+
+    public static String URL_GET_MY_CHANNELS(String userId){
+        return URL_ROOT + "/users/" + userId + "/mychannels" + "?limit=10&offset=0";
     }
 
     public static String URL_GET_FOLLOWED_CHANNELS(String userId, String limit, String offset) {
