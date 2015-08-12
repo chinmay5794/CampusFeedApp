@@ -39,6 +39,7 @@ public class LoginActivity extends ActionBarActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                loginBtn.setEnabled(true);
                 Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                 intent.putExtra(Constants.Keys.USER_ID,etUsername.getText().toString());
                 startActivity(intent);
@@ -54,6 +55,7 @@ public class LoginActivity extends ActionBarActivity {
                 } catch (Exception e){
                     e.printStackTrace();
                 }
+                loginBtn.setEnabled(false);
                 httpPostAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Constants.URL_LOGIN, jsonObject.toString());
             }
         });

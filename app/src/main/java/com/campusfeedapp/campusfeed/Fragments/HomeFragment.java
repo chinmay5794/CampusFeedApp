@@ -26,6 +26,7 @@ import com.campusfeedapp.campusfeed.AsyncTasks.HTTPGetAsyncTask;
 import com.campusfeedapp.campusfeed.CustomViews.FontelloTextView;
 import com.campusfeedapp.campusfeed.DTO.ChannelItemDTO;
 import com.campusfeedapp.campusfeed.DTO.PostItemDTO;
+import com.campusfeedapp.campusfeed.Interfaces.OnHTTPCompleteListener;
 import com.campusfeedapp.campusfeed.R;
 import com.campusfeedapp.campusfeed.CustomViews.RobotoTextView;
 import com.campusfeedapp.campusfeed.Utils.Constants;
@@ -44,7 +45,7 @@ public class HomeFragment extends Fragment {
     private ExampleAdapter adapter;
 
     public static final String TAG = HomeFragment.class.getSimpleName();
-    @SuppressLint("NewApi")
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,7 +53,7 @@ public class HomeFragment extends Fragment {
         View v =  inflater.inflate(R.layout.fragment_home, container, false);
 
         listView = (AnimatedExpandableListView) v.findViewById(R.id.list_view);
-        listView.setAdapter(adapter);
+        //listView.setAdapter(adapter);
 
         // In order to show animations, we need to use a custom click handler
         // for our ExpandableListView.
@@ -115,12 +116,12 @@ public class HomeFragment extends Fragment {
 
             items.add(item);
         }*/
-        //HTTPGetAsyncTask httpGetAsyncTask = new HTTPGetAsyncTask(getActivity(),true);
-        //String userId = getActivity().getIntent().getExtras().getString(Constants.Keys.USER_ID);
-        //httpGetAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Constants.URL_GET_FEED(userId));
-
+        /*HTTPGetAsyncTask httpGetAsyncTask = new HTTPGetAsyncTask(getActivity(),true);
+        String userId = getActivity().getIntent().getExtras().getString(Constants.Keys.USER_ID);
+        httpGetAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Constants.URL_GET_FEED(userId));
+        */
         adapter = new ExampleAdapter(getActivity().getBaseContext());
-        adapter.setData();
+        //adapter.setData();
 
     }
 
