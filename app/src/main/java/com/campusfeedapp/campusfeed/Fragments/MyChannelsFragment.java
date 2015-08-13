@@ -108,13 +108,10 @@ public class MyChannelsFragment extends Fragment {
         httpGetAsyncTask.setHTTPCompleteListener(new OnHTTPCompleteListener() {
             @Override
             public void onHTTPDataReceived(String result, String url) {
-                Log.e("pk", url);
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     JSONArray jsonArray = jsonObject.getJSONArray(Constants.Keys.MY_CHANNELS);
-                    Log.e("apop",String.valueOf(jsonArray.length()));
                     for (int i = 0; i < jsonArray.length(); i++) {
-                        Log.e("pkpi", jsonArray.get(i).toString());
                         ChannelItemDTO channelItemDTO = new Gson().fromJson(jsonArray.get(i).toString(), ChannelItemDTO.class);
                         channelListAdapter.mChannelList.add(channelItemDTO);
                     }

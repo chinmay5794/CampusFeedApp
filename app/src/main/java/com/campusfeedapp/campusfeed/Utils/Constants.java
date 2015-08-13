@@ -37,6 +37,10 @@ public class Constants {
         public static final String PURPOSE = "purpose";
         public static final String EMAIL_ID = "email_id";
         public static final String PHONE_NO = "user_phone";
+        public static final String COURSE = "course";
+        public static final String EVENT = "event";
+        public static final String CLUB = "club";
+        public static final String COMMITTEE = "committee";
     }
 
     public class SharedPrefs {

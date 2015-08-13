@@ -1,56 +1,78 @@
 package com.campusfeedapp.campusfeed;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.campusfeedapp.campusfeed.AsyncTasks.HTTPPostAsyncTask;
 import com.campusfeedapp.campusfeed.CustomViews.FloatLabeledEditText;
 import com.campusfeedapp.campusfeed.CustomViews.RobotoTextView;
 import com.campusfeedapp.campusfeed.Interfaces.OnHTTPCompleteListener;
 import com.campusfeedapp.campusfeed.Utils.Constants;
+import com.google.gson.Gson;
+import com.mobsandgeeks.saripaar.Rule;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.NumberRule;
+import com.mobsandgeeks.saripaar.annotation.Password;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class LoginActivity extends ActionBarActivity {
+public class LoginActivity extends ActionBarActivity{
 
+    Validator validator;
+    HTTPPostAsyncTask httpPostAsyncTask;
     RobotoTextView loginBtn;
-    FloatLabeledEditText etUsername;
+
+    FloatLabeledEditText etUserId;
     FloatLabeledEditText etPassword;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        checkAndRestore();
+
         loginBtn = (RobotoTextView) findViewById(R.id.submit_btn);
-        etUsername = (FloatLabeledEditText) findViewById(R.id.field1);
+        etUserId = (FloatLabeledEditText) findViewById(R.id.field1);
         etPassword = (FloatLabeledEditText) findViewById(R.id.field2);
-        final HTTPPostAsyncTask httpPostAsyncTask = new HTTPPostAsyncTask(LoginActivity.this,true);
+
+        httpPostAsyncTask = new HTTPPostAsyncTask(LoginActivity.this,true);
         httpPostAsyncTask.setHTTPCompleteListener(new OnHTTPCompleteListener() {
             @Override
             public void onHTTPDataReceived(String result, String url) {
                 try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    saveToSharedPrefs(jsonObject);
                     Constants.mAuthToken = new JSONObject(result).getString(Constants.Keys.AUTH_TOKEN);
+                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                    intent.putExtra(Constants.Keys.USER_ID,etUserId.getText().toString());
+                    startActivity(intent);
                 } catch (JSONException e) {
+                    Toast.makeText(getBaseContext(),"Wrong credentials",Toast.LENGTH_SHORT).show();
+                    loginBtn.setEnabled(true);
                     e.printStackTrace();
                 }
-                loginBtn.setEnabled(true);
-                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                intent.putExtra(Constants.Keys.USER_ID,etUsername.getText().toString());
-                startActivity(intent);
+
             }
         });
+
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 JSONObject jsonObject = new JSONObject();
                 try {
-                    jsonObject.put(Constants.Keys.USER_ID, etUsername.getText().toString());
+                    jsonObject.put(Constants.Keys.USER_ID, etUserId.getText().toString());
                     jsonObject.put(Constants.Keys.PASSWORD, etPassword.getText().toString());
                 } catch (Exception e){
                     e.printStackTrace();
@@ -60,6 +82,33 @@ public class LoginActivity extends ActionBarActivity {
             }
         });
 
+    }
+
+    private void checkAndRestore(){
+        SharedPreferences mPrefs = getSharedPreferences(Constants.SharedPrefs.USER_CREDENTIALS,Context.MODE_PRIVATE);
+        boolean loggedIn = mPrefs.getBoolean(Constants.Keys.IS_LOGGED_IN,false);
+        if(loggedIn){
+            String userId = mPrefs.getString(Constants.Keys.USER_ID,"");
+            Constants.mAuthToken = mPrefs.getString(Constants.Keys.AUTH_TOKEN,"");
+            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+            intent.putExtra(Constants.Keys.USER_ID,userId);
+            startActivity(intent);
+        }
+    }
+
+    private void saveToSharedPrefs(JSONObject jResponse){
+        SharedPreferences mPrefs = getSharedPreferences(Constants.SharedPrefs.USER_CREDENTIALS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = mPrefs.edit();
+        try {
+            editor.putString(Constants.Keys.FIRST_NAME, jResponse.getString(Constants.Keys.FIRST_NAME));
+            editor.putString(Constants.Keys.LAST_NAME, jResponse.getString(Constants.Keys.LAST_NAME));
+            editor.putString(Constants.Keys.AUTH_TOKEN, jResponse.getString(Constants.Keys.AUTH_TOKEN));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        editor.putString(Constants.Keys.USER_ID, etUserId.getText().toString());
+        editor.putBoolean(Constants.Keys.IS_LOGGED_IN, true);
+        editor.commit();
     }
 
     @Override
