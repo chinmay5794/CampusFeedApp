@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.campusfeedapp.campusfeed.AsyncTasks.HTTPPostAsyncTask;
@@ -36,6 +37,8 @@ public class LoginActivity extends ActionBarActivity{
     FloatLabeledEditText etUserId;
     FloatLabeledEditText etPassword;
 
+    TextView signupTxt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,19 +54,22 @@ public class LoginActivity extends ActionBarActivity{
         httpPostAsyncTask.setHTTPCompleteListener(new OnHTTPCompleteListener() {
             @Override
             public void onHTTPDataReceived(String result, String url) {
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
-                    saveToSharedPrefs(jsonObject);
-                    Constants.mAuthToken = new JSONObject(result).getString(Constants.Keys.AUTH_TOKEN);
-                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                    intent.putExtra(Constants.Keys.USER_ID,etUserId.getText().toString());
-                    startActivity(intent);
-                } catch (JSONException e) {
-                    Toast.makeText(getBaseContext(),"Wrong credentials",Toast.LENGTH_SHORT).show();
-                    loginBtn.setEnabled(true);
-                    e.printStackTrace();
-                }
+                if(!result.contentEquals("")) {
+                    try {
+                        Constants.mAuthToken = new JSONObject(result).getString(Constants.Keys.AUTH_TOKEN);
+                        saveToSharedPrefs(new JSONObject(result));
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra(Constants.Keys.USER_ID, etUserId.getText().toString());
+                        startActivity(intent);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        loginBtn.setEnabled(true);
+                    }
 
+                }
+                else{
+                    Toast.makeText(LoginActivity.this,"Invalid Username or Password",Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -74,11 +80,19 @@ public class LoginActivity extends ActionBarActivity{
                 try {
                     jsonObject.put(Constants.Keys.USER_ID, etUserId.getText().toString());
                     jsonObject.put(Constants.Keys.PASSWORD, etPassword.getText().toString());
-                } catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 loginBtn.setEnabled(false);
                 httpPostAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Constants.URL_LOGIN, jsonObject.toString());
+            }
+        });
+        signupTxt=(TextView)findViewById(R.id.signup_submit);
+        signupTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this,SignupActivity.class);
+                startActivity(intent);
             }
         });
 

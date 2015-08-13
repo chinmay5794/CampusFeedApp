@@ -114,13 +114,13 @@ public class HTTPPostAsyncTask extends AsyncTask<String,String,String> {
     protected void onPostExecute(String response) {
         super.onPostExecute(response);
         try{
-            if(!response.isEmpty()) {
+//            if(!response.isEmpty()) {
                 Log.e(TAG + "response:", response);
                 listener.onHTTPDataReceived(response, url);
-            }
-            else{
-                Log.w(TAG, "Null response");
-            }
+//            }
+//            else{
+//                Log.w(TAG, "Null response");
+//            }
         }catch (Exception e){
             e.printStackTrace();
         }

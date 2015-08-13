@@ -121,8 +121,7 @@ public class HomeFragment extends Fragment {
         httpGetAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Constants.URL_GET_FEED(userId));
         */
         adapter = new ExampleAdapter(getActivity().getBaseContext());
-        //adapter.setData();
-
+       // adapter.setData();
     }
 
     private static class GroupItem {
@@ -253,7 +252,7 @@ public class HomeFragment extends Fragment {
         return new HomeFragment();
     }
 
-    private HomeFragment() {
+    public HomeFragment() {
         // Required empty public constructor
     }
 }
