@@ -12,6 +12,7 @@ public class Constants {
         public static final String LAST_NAME = "last_name";
         public static final String STATUS = "status";
         public static final String PASSWORD = "password";
+        public static final String USERIMAGE = "user_img";
         public static final String AUTH_TOKEN = "mAuthToken";
         public static final String IS_LOGGED_IN = "is_logged_in";
         public static final String FOLLOWED_CHANNELS = "followed_channels";
@@ -69,6 +70,7 @@ public class Constants {
 
     public static final String URL_ROOT = "http://campusfeed-1018.appspot.com";
     public static final String URL_LOGIN = URL_ROOT + "/login";
+    public static final String URL_USER_IMAGE = URL_ROOT + "/imageurl";
     public static final String URL_GET_ALL_CHANNELS = URL_ROOT + "/channels";
 
     public static String URL_GET_CHANNEL_DETAILS(String channelId) {

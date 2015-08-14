@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +16,18 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.campusfeedapp.campusfeed.CustomViews.RobotoTextView;
+import com.campusfeedapp.campusfeed.Utils.Constants;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
+import java.io.File;
 
 
 public class SignupActivity extends ActionBarActivity {
@@ -21,6 +35,7 @@ public class SignupActivity extends ActionBarActivity {
     RobotoTextView signupBtn,loadImgBtn;
     private static int RESULT_LOAD_IMG = 1;
     String imgDecodableString;
+    String filepath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +44,7 @@ public class SignupActivity extends ActionBarActivity {
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                new UploadFileToServer().execute();
                 Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
@@ -80,6 +96,8 @@ public class SignupActivity extends ActionBarActivity {
                 // Get the Image from data
 
                 Uri selectedImage = data.getData();
+                File mf = new File(selectedImage.toString());
+                filepath = mf.getAbsolutePath();
                 String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
                 // Get the cursor
@@ -106,5 +124,104 @@ public class SignupActivity extends ActionBarActivity {
         }
 
     }
+
+    public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
+
+        private  String TAG = getClass().getSimpleName().toString();
+        long totalSize = 100;
+        @Override
+        protected void onPreExecute() {
+            // setting progress bar to zero
+            //progressBar.setProgress(0);
+            super.onPreExecute();
+        }
+
+    /*@Override
+    protected void onProgressUpdate(Integer... progress) {
+        // Making progress bar visible
+        progressBar.setVisibility(View.VISIBLE);
+
+        // updating progress bar value
+        progressBar.setProgress(progress[0]);
+
+        // updating percentage value
+        txtPercentage.setText(String.valueOf(progress[0]) + "%");
+    }*/
+
+        @Override
+        protected String doInBackground(Void... params) {
+            return uploadFile();
+        }
+
+        @SuppressWarnings("deprecation")
+        private String uploadFile() {
+            String responseString = null;
+
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost(Constants.URL_USER_IMAGE);
+
+            try {
+                /*AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
+                        new AndroidMultiPartEntity.ProgressListener() {
+
+                            @Override
+                            public void transferred(long num) {
+                                publishProgress((int) ((num / (float) totalSize) * 100));
+                            }
+                        });*/
+                MultipartEntityBuilder entity1 = MultipartEntityBuilder.create();
+                //MultipartEntity entity1 = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE,null, Charset.forName("UTF-8"));
+                //File sourceFile = new File(filepath);
+
+                // Adding file data to http body
+                //entity.addPart(Constants.Keys.USERIMAGE, new FileBody(sourceFile));
+
+                // Extra parameters if you want to pass to server
+                entity1.addPart(Constants.Keys.USER_ID,new StringBody("userId"));
+                entity1.addPart(Constants.Keys.FIRST_NAME, new StringBody("first"));
+                entity1.addPart(Constants.Keys.LAST_NAME, new StringBody("last"));
+                entity1.addPart(Constants.Keys.EMAIL_ID, new StringBody("email-id"));
+                entity1.addPart(Constants.Keys.PASSWORD, new StringBody("pswd"));
+                entity1.addPart("branch", new StringBody("Branch"));
+                entity1.addPart("phone", new StringBody("phone number"));
+
+               // totalSize = entity.getContentLength();
+                httppost.setEntity(entity1.build());
+
+                // Making server call
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity r_entity = response.getEntity();
+
+                int statusCode = response.getStatusLine().getStatusCode();
+                if (statusCode == 200) {
+                    // Server response
+                    responseString = EntityUtils.toString(r_entity);
+                } else {
+                    responseString = "Error occurred! Http Status Code: "
+                            + statusCode;
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            /*catch(ClientProtocolException e) {
+                responseString = e.toString();
+            } catch (IOException e) {
+                responseString = e.toString();
+            }*/
+
+            return responseString;
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Log.e(TAG, "Response from server: " + result);
+
+            super.onPostExecute(result);
+        }
+
+    }
+
 
 }
