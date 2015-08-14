@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.campusfeedapp.campusfeed.Adapters.ChannelListAdapter;
+import com.campusfeedapp.campusfeed.AddPostActivity;
 import com.campusfeedapp.campusfeed.AsyncTasks.HTTPGetAsyncTask;
 import com.campusfeedapp.campusfeed.ChannelPostsActivity;
 import com.campusfeedapp.campusfeed.DTO.ChannelItemDTO;
@@ -42,6 +43,8 @@ public class MyChannelsFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private boolean addPost = false;
+
     public static final String TAG = MyChannelsFragment.class.getSimpleName();
 
     ChannelListAdapter channelListAdapter;
@@ -67,6 +70,10 @@ public class MyChannelsFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public void setAddPost(){
+        this.addPost = true;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,11 +96,18 @@ public class MyChannelsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String channelID = channelListAdapter.mChannelList.get(position).getChannelID();
-                String channelImgUrl = channelListAdapter.mChannelList.get(position).getImgUrl();
-                Intent intent = new Intent(getActivity(),ChannelPostsActivity.class);
-                intent.putExtra(Constants.Keys.CHANNEL_ID,channelID);
-                intent.putExtra(Constants.Keys.CHANNEL_IMAGE_URL,channelImgUrl);
-                startActivity(intent);
+                if(!addPost) {
+                    String channelImgUrl = channelListAdapter.mChannelList.get(position).getImgUrl();
+                    Intent intent = new Intent(getActivity(), ChannelPostsActivity.class);
+                    intent.putExtra(Constants.Keys.CHANNEL_ID, channelID);
+                    intent.putExtra(Constants.Keys.CHANNEL_IMAGE_URL, channelImgUrl);
+                    startActivity(intent);
+                }
+                else {
+                    Intent intent = new Intent(getActivity(), AddPostActivity.class);
+                    intent.putExtra(Constants.Keys.CHANNEL_ID,channelID);
+                    startActivity(intent);
+                }
             }
         });
         fetchMyChannelsData();

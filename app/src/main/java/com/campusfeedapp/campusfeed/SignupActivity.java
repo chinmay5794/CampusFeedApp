@@ -103,6 +103,7 @@ public class SignupActivity extends ActionBarActivity {
         } catch (Exception e) {
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
                     .show();
+            e.printStackTrace();
         }
 
     }

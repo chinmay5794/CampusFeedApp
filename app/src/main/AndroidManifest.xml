@@ -33,6 +33,10 @@
             android:name=".SignupActivity"
             android:label="@string/title_activity_signup" >
         </activity>
+        <activity
+            android:name=".AddPostActivity"
+            android:label="@string/title_activity_add_post" >
+        </activity>
     </application>
 
 </manifest>

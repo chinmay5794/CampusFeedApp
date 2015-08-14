@@ -155,6 +155,13 @@ public class MainActivity extends FragmentActivity {
                         .beginTransaction()
                         .replace(R.id.content_frame, DiscoverChannelsFragment.newInstance(), DiscoverChannelsFragment.TAG).commit();
                 break;
+            case 3:
+                MyChannelsFragment myChannelsFragment = MyChannelsFragment.newInstance();
+                myChannelsFragment.setAddPost();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame,myChannelsFragment,MyChannelsFragment.TAG).commit();
+                break;
 
         }
         mDrawerLayout.closeDrawer(mDrawerList);

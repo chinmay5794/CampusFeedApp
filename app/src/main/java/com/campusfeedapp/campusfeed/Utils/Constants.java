@@ -33,6 +33,8 @@ public class Constants {
         public static final String POST_PENDING_BIT = "pending_bit";
         public static final String POST_AUTHOR_FULL_NAME = "user_full_name";
         public static final String POST_AUTHOR_IMAGE_URL = "user_img_url";
+        public static final String POST_BY = "post_by";
+        public static final String IS_ANONYMOUS = "isAnonymous";
         public static final String POST_AUTHOR_BRANCH = "user_branch";
         public static final String PURPOSE = "purpose";
         public static final String EMAIL_ID = "email_id";

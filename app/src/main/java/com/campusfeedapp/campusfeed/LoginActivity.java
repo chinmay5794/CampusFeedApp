@@ -28,7 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class LoginActivity extends ActionBarActivity{
+public class LoginActivity extends ActionBarActivity implements View.OnClickListener {
 
     Validator validator;
     HTTPPostAsyncTask httpPostAsyncTask;
@@ -50,43 +50,7 @@ public class LoginActivity extends ActionBarActivity{
         etUserId = (FloatLabeledEditText) findViewById(R.id.field1);
         etPassword = (FloatLabeledEditText) findViewById(R.id.field2);
 
-        httpPostAsyncTask = new HTTPPostAsyncTask(LoginActivity.this,true);
-        httpPostAsyncTask.setHTTPCompleteListener(new OnHTTPCompleteListener() {
-            @Override
-            public void onHTTPDataReceived(String result, String url) {
-                if(!result.contentEquals("")) {
-                    try {
-                        Constants.mAuthToken = new JSONObject(result).getString(Constants.Keys.AUTH_TOKEN);
-                        saveToSharedPrefs(new JSONObject(result));
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra(Constants.Keys.USER_ID, etUserId.getText().toString());
-                        startActivity(intent);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        loginBtn.setEnabled(true);
-                    }
-
-                }
-                else{
-                    Toast.makeText(LoginActivity.this,"Invalid Username or Password",Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put(Constants.Keys.USER_ID, etUserId.getText().toString());
-                    jsonObject.put(Constants.Keys.PASSWORD, etPassword.getText().toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                loginBtn.setEnabled(false);
-                httpPostAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Constants.URL_LOGIN, jsonObject.toString());
-            }
-        });
+        loginBtn.setOnClickListener(this);
         signupTxt=(TextView)findViewById(R.id.signup_submit);
         signupTxt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,5 +109,44 @@ public class LoginActivity extends ActionBarActivity{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        if (v.getId() == R.id.submit_btn) {
+
+            httpPostAsyncTask = new HTTPPostAsyncTask(LoginActivity.this, true);
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put(Constants.Keys.USER_ID, etUserId.getText().toString());
+                jsonObject.put(Constants.Keys.PASSWORD, etPassword.getText().toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            httpPostAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Constants.URL_LOGIN, jsonObject.toString());
+
+            httpPostAsyncTask.setHTTPCompleteListener(new OnHTTPCompleteListener() {
+                @Override
+                public void onHTTPDataReceived(String result, String url) {
+                    if (!result.contentEquals("")) {
+                        try {
+                            Constants.mAuthToken = new JSONObject(result).getString(Constants.Keys.AUTH_TOKEN);
+                            saveToSharedPrefs(new JSONObject(result));
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.putExtra(Constants.Keys.USER_ID, etUserId.getText().toString());
+                            startActivity(intent);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            loginBtn.setEnabled(true);
+                        }
+
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Invalid Username or Password", Toast.LENGTH_LONG).show();
+                        loginBtn.setEnabled(true);
+                    }
+                }
+            });
+        }
     }
 }
