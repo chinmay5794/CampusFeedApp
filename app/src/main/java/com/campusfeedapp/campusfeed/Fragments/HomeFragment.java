@@ -52,7 +52,7 @@ public class HomeFragment extends Fragment {
         View v =  inflater.inflate(R.layout.fragment_home, container, false);
 
         listView = (AnimatedExpandableListView) v.findViewById(R.id.list_view);
-        listView.setAdapter(adapter);
+        //listView.setAdapter(adapter);
 
         // In order to show animations, we need to use a custom click handler
         // for our ExpandableListView.
@@ -120,7 +120,7 @@ public class HomeFragment extends Fragment {
         //httpGetAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Constants.URL_GET_FEED(userId));
 
         adapter = new ExampleAdapter(getActivity().getBaseContext());
-        adapter.setData();
+       // adapter.setData();
 
     }
 

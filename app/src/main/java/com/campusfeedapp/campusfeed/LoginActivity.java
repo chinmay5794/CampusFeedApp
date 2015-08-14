@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.campusfeedapp.campusfeed.AsyncTasks.HTTPPostAsyncTask;
 import com.campusfeedapp.campusfeed.CustomViews.FloatLabeledEditText;
@@ -23,6 +25,7 @@ public class LoginActivity extends ActionBarActivity {
     RobotoTextView loginBtn;
     FloatLabeledEditText etUsername;
     FloatLabeledEditText etPassword;
+    TextView signupTxt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,14 +37,19 @@ public class LoginActivity extends ActionBarActivity {
         httpPostAsyncTask.setHTTPCompleteListener(new OnHTTPCompleteListener() {
             @Override
             public void onHTTPDataReceived(String result, String url) {
-                try {
-                    Constants.mAuthToken = new JSONObject(result).getString(Constants.Keys.AUTH_TOKEN);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if(!result.contentEquals("")) {
+                    try {
+                        Constants.mAuthToken = new JSONObject(result).getString(Constants.Keys.AUTH_TOKEN);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.putExtra(Constants.Keys.USER_ID, etUsername.getText().toString());
+                    startActivity(intent);
                 }
-                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                intent.putExtra(Constants.Keys.USER_ID,etUsername.getText().toString());
-                startActivity(intent);
+                else{
+                    Toast.makeText(LoginActivity.this,"Invalid Username or Password",Toast.LENGTH_LONG).show();
+                }
             }
         });
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -51,10 +59,18 @@ public class LoginActivity extends ActionBarActivity {
                 try {
                     jsonObject.put(Constants.Keys.USER_ID, etUsername.getText().toString());
                     jsonObject.put(Constants.Keys.PASSWORD, etPassword.getText().toString());
-                } catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 httpPostAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Constants.URL_LOGIN, jsonObject.toString());
+            }
+        });
+        signupTxt=(TextView)findViewById(R.id.signup_submit);
+        signupTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this,SignupActivity.class);
+                startActivity(intent);
             }
         });
 

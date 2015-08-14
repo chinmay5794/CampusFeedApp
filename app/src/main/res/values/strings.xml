@@ -132,6 +132,11 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="email">E-mail</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="department">Department</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="college_id">College ID number</string>
     <string name="country">Country</string>
     <string name="city">City</string>
     <string name="welcome">Welcome!</string>
@@ -155,5 +160,6 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_channel_posts">ChannelPostsActivity</string>
+    <string name="title_activity_signup">SignupActivity</string>
 
 </resources>
