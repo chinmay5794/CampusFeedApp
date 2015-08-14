@@ -35,6 +35,7 @@ public class DiscoverChannelsFragment extends Fragment {
     public static final String TAG = DiscoverChannelsFragment.class.getSimpleName();
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
+    HTTPGetAsyncTask httpGetAsyncTask;
 
 
     public static DiscoverChannelsFragment newInstance() {
@@ -75,7 +76,14 @@ public class DiscoverChannelsFragment extends Fragment {
         channelListAdapterClub = new ChannelListAdapter(clubChannelList,getActivity().getBaseContext());
         channelListAdapterCommittee = new ChannelListAdapter(committeeChannelList,getActivity().getBaseContext());
 
-        HTTPGetAsyncTask httpGetAsyncTask = new HTTPGetAsyncTask(getActivity(),true);
+        fetchChannelsData();
+
+        return v;
+    }
+
+    private void fetchChannelsData(){
+
+        httpGetAsyncTask = new HTTPGetAsyncTask(getActivity(),true);
         httpGetAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Constants.URL_GET_ALL_CHANNELS+"?limit=10&offset=0");
         httpGetAsyncTask.setHTTPCompleteListener(new OnHTTPCompleteListener() {
             @Override
@@ -117,7 +125,7 @@ public class DiscoverChannelsFragment extends Fragment {
             }
         });
 
-        return v;
+
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {

@@ -22,8 +22,8 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
@@ -137,24 +137,11 @@ public class SignupActivity extends ActionBarActivity {
             super.onPreExecute();
         }
 
-    /*@Override
-    protected void onProgressUpdate(Integer... progress) {
-        // Making progress bar visible
-        progressBar.setVisibility(View.VISIBLE);
-
-        // updating progress bar value
-        progressBar.setProgress(progress[0]);
-
-        // updating percentage value
-        txtPercentage.setText(String.valueOf(progress[0]) + "%");
-    }*/
-
         @Override
         protected String doInBackground(Void... params) {
             return uploadFile();
         }
 
-        @SuppressWarnings("deprecation")
         private String uploadFile() {
             String responseString = null;
 
@@ -162,6 +149,16 @@ public class SignupActivity extends ActionBarActivity {
             HttpPost httppost = new HttpPost(Constants.URL_USER_IMAGE);
 
             try {
+                MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+                builder.addTextBody(Constants.Keys.USER_ID,"userId");
+                builder.addTextBody(Constants.Keys.FIRST_NAME,"first");
+                builder.addTextBody(Constants.Keys.LAST_NAME, "last");
+                builder.addTextBody(Constants.Keys.EMAIL_ID, "email-id");
+                builder.addTextBody(Constants.Keys.PASSWORD, "pswd");
+                builder.addTextBody("branch", "Branch");
+                builder.addTextBody("phone", "phone number");
+
+                httppost.setEntity(builder.build());
                 /*AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
                         new AndroidMultiPartEntity.ProgressListener() {
 
@@ -170,7 +167,7 @@ public class SignupActivity extends ActionBarActivity {
                                 publishProgress((int) ((num / (float) totalSize) * 100));
                             }
                         });*/
-                MultipartEntityBuilder entity1 = MultipartEntityBuilder.create();
+                /*MultipartEntityBuilder entity1 = MultipartEntityBuilder.create();
                 //MultipartEntity entity1 = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE,null, Charset.forName("UTF-8"));
                 //File sourceFile = new File(filepath);
 
@@ -188,6 +185,7 @@ public class SignupActivity extends ActionBarActivity {
 
                // totalSize = entity.getContentLength();
                 httppost.setEntity(entity1.build());
+                */
 
                 // Making server call
                 HttpResponse response = httpclient.execute(httppost);
