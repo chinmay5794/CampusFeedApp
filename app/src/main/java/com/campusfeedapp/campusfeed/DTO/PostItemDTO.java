@@ -33,6 +33,17 @@ public class PostItemDTO {
     @SerializedName(Constants.Keys.POST_AUTHOR_IMAGE_URL)
     public String userBranch;
 
+    @SerializedName(Constants.Keys.POST_VIEWS)
+    public String numViews;
+
+    public String getNumViews() {
+        return numViews;
+    }
+
+    public void setNumViews(String numViews) {
+        this.numViews = numViews;
+    }
+
     public String getPostID() {
         return postID;
     }

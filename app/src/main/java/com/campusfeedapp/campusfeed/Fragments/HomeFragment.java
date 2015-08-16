@@ -177,7 +177,7 @@ public class HomeFragment extends Fragment {
                 holder = new ChildHolder();
                 convertView = inflater.inflate(R.layout.post_list_item, parent,
                         false);
-                holder.title = (RobotoTextView) convertView.findViewById(R.id.list_item_google_cards_travel_title);
+                //holder.title = (RobotoTextView) convertView.findViewById(R.id.list_item_google_cards_travel_title);
                 holder.text = (RobotoTextView) convertView.findViewById(R.id.list_item_google_cards_travel_text);
                 holder.image = (ImageView) convertView.findViewById(R.id.list_item_google_cards_travel_image);
                 convertView.setTag(holder);

@@ -61,4 +61,6 @@
     <color name="cpb_green_dark">#ff6d9b00</color>
     <color name="cpb_white">@android:color/white</color>
 
+    <color name="black_overlay">#66000000</color>
+
 </resources>

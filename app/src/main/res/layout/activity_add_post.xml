@@ -45,21 +45,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical" >
 
-                <!--<com.campusfeedapp.campusfeed.CustomViews.FloatLabeledEditText
-                    android:id="@+id/field1_signup"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    app:fletFloatingHint="@string/channel_description"
-                    app:fletHintTextColor="@color/main_color_grey_300"
-                    app:fletSingleLine="true"
-                    app:fletTextBackground="@drawable/edit_text_background_accent"
-                    app:fletTextColor="@color/main_color_grey_700" >
-                </com.campusfeedapp.campusfeed.CustomViews.FloatLabeledEditText>-->
-
                 <EditText
-                    android:id="@+id/et_channel_description"
+                    android:id="@+id/et_post_text"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
@@ -69,104 +56,10 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:background="@drawable/textinputborder"
-                    android:hint="@string/channel_description"
+                    android:hint="Enter body of the post here"
                     android:textColorHint="@color/main_color_grey_300"
                     android:paddingLeft="10dp">
                 </EditText>
-
-            </LinearLayout>
-
-            <!--<LinarLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical" >
-
-                <com.campusfeedapp.campusfeed.CustomViews.MaterialDesignIconsTextView
-                    style="@style/TextViewAppearance.Title1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="0dp"
-                    android:text="@string/material_icon_account"
-                    android:textColor="@color/main_color_grey_300"
-                    android:textSize="22dp" />
-
-                <com.campusfeedapp.campusfeed.CustomViews.FloatLabeledEditText
-                    android:id="@+id/field2_signup"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    app:fletFloatingHint="@string/last_name"
-                    app:fletHintTextColor="@color/main_color_grey_300"
-                    app:fletSingleLine="true"
-                    app:fletTextBackground="@drawable/edit_text_background_accent"
-                    app:fletTextColor="@color/main_color_grey_700" >
-                </com.campusfeedapp.campusfeed.CustomViews.FloatLabeledEditText>
-            </LinearLayout>-->
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical" >
-
-                <com.campusfeedapp.campusfeed.CustomViews.MaterialRippleLayout
-                    style="@style/RippleStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    app:rippleColor="@color/main_color_grey_700" >
-
-                    <CheckBox
-                        style="@style/CheckBoxStyle.Light"
-                        android:layout_width="match_parent"
-                        android:padding="16dp"
-                        android:text="Add Anonymously"
-                        android:textColor="#000000"
-                        android:id="@+id/chkbox_add_anon"/>
-                </com.campusfeedapp.campusfeed.CustomViews.MaterialRippleLayout>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="vertical"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:id="@+id/radio_auth">
-
-                <com.campusfeedapp.campusfeed.CustomViews.RobotoTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Want to add this post as:"/>
-
-                <RadioGroup
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Channel Name"
-                        android:id="@+id/rb_channel_name"
-                        android:textColor="#000000"
-                        style="@style/RadioButtonStyle"
-                        />
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Author Name"
-                        android:id="@+id/rb_author_name"
-                        android:textColor="#000000"
-                        style="@style/RadioButtonStyle"
-                        />
-
-
-                </RadioGroup>
 
             </LinearLayout>
 
@@ -179,20 +72,20 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/upload_imgview"
+                    android:id="@+id/upload_imgview_addpost"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/default_img"/>
 
                 <com.campusfeedapp.campusfeed.CustomViews.RobotoTextView
-                    android:id="@+id/upload_btn_signup"
+                    android:id="@+id/upload_btn_addpost"
                     style="@style/ButtonStyle.RaisedEmpty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="0dp"
                     android:background="@drawable/transparent_button_selector"
                     android:minWidth="96dp"
-                    android:text="Upload a picture"
+                    android:text="Upload picture (optional)"
                     android:textColor="@color/main_color_grey_700"
                     app:typeface="robotoMedium"
                     />

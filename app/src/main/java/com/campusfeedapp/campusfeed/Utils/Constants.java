@@ -28,11 +28,12 @@ public class Constants {
         public static final String CHANNEL_POSTS = "posts";
         public static final String CHANNEL_ADMIN_NAME = "full_name";
         public static final String POST_ID = "post_id";
-        public static final String POST_IMAGE_URL = "img_url";
-        public static final String POST_TIMESTAMP = "time";
+        public static final String POST_IMAGE_URL = "post_img_url";
+        public static final String POST_TIMESTAMP = "created_time";
         public static final String POST_TEXT = "text";
+        public static final String POST_VIEWS = "num_views";
         public static final String POST_PENDING_BIT = "pending_bit";
-        public static final String POST_AUTHOR_FULL_NAME = "user_full_name";
+        public static final String POST_AUTHOR_FULL_NAME = "full_name";
         public static final String POST_AUTHOR_IMAGE_URL = "user_img_url";
         public static final String POST_BY = "post_by";
         public static final String IS_ANONYMOUS = "isAnonymous";

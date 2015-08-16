@@ -150,6 +150,8 @@
     <string name="skip">SKIP</string>
     <string name="raised">RAISED</string>
     <string name="flat">FLAT</string>
+
+    <string name="eye">\u1f440</string>
     
     <string name="channel_description">Channel Description</string>
 
@@ -164,5 +166,9 @@
     <string name="title_activity_channel_posts">ChannelPostsActivity</string>
     <string name="title_activity_signup">SignupActivity</string>
     <string name="title_activity_add_post">AddPostActivity</string>
+
+    <string name="title_activity_image_display">ImageDisplayActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>
