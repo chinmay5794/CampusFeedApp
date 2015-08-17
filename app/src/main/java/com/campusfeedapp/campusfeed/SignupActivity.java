@@ -236,6 +236,7 @@ public class SignupActivity extends ActionBarActivity {
                     // Server response
                     Toast.makeText(getApplicationContext(),"Account Created",Toast.LENGTH_LONG).show();
                     responseString = EntityUtils.toString(r_entity);
+                    finish();
                 } else {
                     responseString = "Error occurred! Http Status Code: "
                             + statusCode;
