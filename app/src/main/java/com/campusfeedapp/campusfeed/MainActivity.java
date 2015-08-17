@@ -18,6 +18,8 @@ import com.campusfeedapp.campusfeed.Adapters.DrawerAdapter;
 import com.campusfeedapp.campusfeed.Fragments.DiscoverChannelsFragment;
 import com.campusfeedapp.campusfeed.Fragments.HomeFragment;
 import com.campusfeedapp.campusfeed.Fragments.MyChannelsFragment;
+import com.campusfeedapp.campusfeed.Utils.GCMRegistrationTask;
+import com.campusfeedapp.campusfeed.Utils.GoogleServicesUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,11 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_main);
+
+        if (GoogleServicesUtil.checkPlayServices(MainActivity.this)) {
+            //new GCMRegistrationTask(MainActivity.this,
+              //      getApplicationContext()).execute();
+        }
 
         initializeDrawerItemList();
         mTitle = mDrawerTitle = mDrawerItems.get(0);
@@ -86,6 +93,12 @@ public class MainActivity extends FragmentActivity {
             navigateTo(0);
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        GoogleServicesUtil.checkPlayServices(MainActivity.this);
     }
 
     private void initializeDrawerItemList(){

@@ -2,24 +2,33 @@ package com.campusfeedapp.campusfeed.Fragments;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.campusfeedapp.campusfeed.Adapters.ChannelListAdapter;
+import com.campusfeedapp.campusfeed.ChannelPostsActivity;
 import com.campusfeedapp.campusfeed.CustomViews.AnimatedExpandableListView;
 import com.campusfeedapp.campusfeed.CustomViews.AnimatedExpandableListView.AnimatedExpandableListAdapter;
 import com.campusfeedapp.campusfeed.AsyncTasks.HTTPGetAsyncTask;
@@ -30,7 +39,11 @@ import com.campusfeedapp.campusfeed.Interfaces.OnHTTPCompleteListener;
 import com.campusfeedapp.campusfeed.R;
 import com.campusfeedapp.campusfeed.CustomViews.RobotoTextView;
 import com.campusfeedapp.campusfeed.Utils.Constants;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * This is an example usage of the AnimatedExpandableListView class.
@@ -41,218 +54,189 @@ import com.squareup.picasso.Picasso;
  */
 public class HomeFragment extends Fragment {
 
-    private AnimatedExpandableListView listView;
-    private ExampleAdapter adapter;
-
     public static final String TAG = HomeFragment.class.getSimpleName();
+    SectionsPagerAdapter mSectionsPagerAdapter;
+    ViewPager mViewPager;
+    HTTPGetAsyncTask httpGetAsyncTask;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_home, container, false);
-
-        listView = (AnimatedExpandableListView) v.findViewById(R.id.list_view);
-        //listView.setAdapter(adapter);
-
-        // In order to show animations, we need to use a custom click handler
-        // for our ExpandableListView.
-        listView.setOnGroupClickListener(new OnGroupClickListener() {
-
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v,
-                                        int groupPosition, long id) {
-                // We call collapseGroupWithAnimation(int) and
-                // expandGroupWithAnimation(int) to animate group
-                // expansion/collapse.
-                if (listView.isGroupExpanded(groupPosition)) {
-                    listView.collapseGroupWithAnimation(groupPosition);
-                } else {
-                    listView.expandGroupWithAnimation(groupPosition);
-                }
-                return true;
-            }
-
-        });
-
-        // Set indicator (arrow) to the right
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        //Log.v("width", width + "");
-        Resources r = getResources();
-        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                50, r.getDisplayMetrics());
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            listView.setIndicatorBounds(width - px, width);
-        } else {
-            listView.setIndicatorBoundsRelative(width - px, width);
-        }
-
-        return  v;
-
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        /*List<GroupItem> items = new ArrayList<GroupItem>();
-
-        // Populate our list with groups and it's children
-        for (int i = 1; i < 100; i++) {
-            GroupItem item = new GroupItem();
-
-            item.title = "Expand this item " + i;
-
-            for (int j = 0; j < i; j++) {
-                ChildItem child = new ChildItem();
-                child.title = "Expanded " + j;
-                //child.hint = "Too awesome";
-
-                item.items.add(child);
-            }
-
-            items.add(item);
-        }*/
-        /*HTTPGetAsyncTask httpGetAsyncTask = new HTTPGetAsyncTask(getActivity(),true);
-        String userId = getActivity().getIntent().getExtras().getString(Constants.Keys.USER_ID);
-        httpGetAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Constants.URL_GET_FEED(userId));
-        */
-        adapter = new ExampleAdapter(getActivity().getBaseContext());
-       // adapter.setData();
-    }
-
-    private static class GroupItem {
-        ChannelItemDTO channelItemDTO;
-        List<PostItemDTO> postItemList = new ArrayList<PostItemDTO>();
-    }
-
-    private static class ChildHolder {
-        RobotoTextView title;
-        RobotoTextView text;
-        ImageView image;
-        //TextView hint;
-    }
-
-    private static class GroupHolder {
-        RobotoTextView title;
-        ImageView image;
-        FontelloTextView icon;
-    }
-
-    /**
-     * Adapter for our list of {@link GroupItem}s.
-     */
-    private class ExampleAdapter extends AnimatedExpandableListAdapter {
-        private LayoutInflater inflater;
-
-        private List<GroupItem> items;
-
-        public ExampleAdapter(Context context) {
-            inflater = LayoutInflater.from(context);
-        }
-
-        public void setData(List<GroupItem> items) {
-            this.items = items;
-        }
-
-        @Override
-        public PostItemDTO getChild(int groupPosition, int childPosition) {
-            return items.get(groupPosition).postItemList.get(childPosition);
-        }
-
-        @Override
-        public long getChildId(int groupPosition, int childPosition) {
-            return childPosition;
-        }
-
-        @Override
-        public View getRealChildView(int groupPosition, int childPosition,
-                                     boolean isLastChild, View convertView, ViewGroup parent) {
-            ChildHolder holder;
-            PostItemDTO postItemDTO = getChild(groupPosition, childPosition);
-            if (convertView == null) {
-                holder = new ChildHolder();
-                convertView = inflater.inflate(R.layout.post_list_item, parent,
-                        false);
-                //holder.title = (RobotoTextView) convertView.findViewById(R.id.list_item_google_cards_travel_title);
-                holder.text = (RobotoTextView) convertView.findViewById(R.id.list_item_google_cards_travel_text);
-                holder.image = (ImageView) convertView.findViewById(R.id.list_item_google_cards_travel_image);
-                convertView.setTag(holder);
-            } else {
-                holder = (ChildHolder) convertView.getTag();
-            }
-
-            holder.title.setText(postItemDTO.getUserFullName());
-            holder.text.setText(postItemDTO.getText());
-            Picasso.with(getActivity().getBaseContext()).load(postItemDTO.imgUrl).centerCrop().fit().into(holder.image);
-            //holder.hint.setText(item.hint);
-
-            return convertView;
-        }
-
-        @Override
-        public int getRealChildrenCount(int groupPosition) {
-            return items.get(groupPosition).postItemList.size();
-        }
-
-        @Override
-        public GroupItem getGroup(int groupPosition) {
-            return items.get(groupPosition);
-        }
-
-        @Override
-        public int getGroupCount() {
-            return items.size();
-        }
-
-        @Override
-        public long getGroupId(int groupPosition) {
-            return groupPosition;
-        }
-
-        @Override
-        public View getGroupView(int groupPosition, boolean isExpanded,
-                                 View convertView, ViewGroup parent) {
-            GroupHolder holder;
-            GroupItem item = getGroup(groupPosition);
-            if (convertView == null) {
-                holder = new GroupHolder();
-                convertView = inflater.inflate(R.layout.expandable_list_item, parent,
-                        false);
-                holder.title = (RobotoTextView) convertView
-                        .findViewById(R.id.title);
-                holder.image = (ImageView) convertView.findViewById(R.id.image);
-                convertView.setTag(holder);
-            } else {
-                holder = (GroupHolder) convertView.getTag();
-            }
-
-            holder.title.setText(item.channelItemDTO.getChannelName());
-            Picasso.with(getActivity().getBaseContext()).load(item.channelItemDTO.getImgUrl()).centerCrop().fit().into(holder.image);
-
-            return convertView;
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return true;
-        }
-
-        @Override
-        public boolean isChildSelectable(int arg0, int arg1) {
-            return true;
-        }
-
-    }
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
     }
 
-    public HomeFragment() {
-        // Required empty public constructor
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    List<ChannelItemDTO> courseList;
+    List<ChannelItemDTO> eventList;
+    List<ChannelItemDTO> clubList;
+    List<ChannelItemDTO> committeeList;
+
+    ChannelListAdapter channelListAdapterCourse;
+    ChannelListAdapter channelListAdapterEvent;
+    ChannelListAdapter channelListAdapterClub;
+    ChannelListAdapter channelListAdapterCommittee;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_tabbed, container, false);
+        mSectionsPagerAdapter = new SectionsPagerAdapter(
+                getChildFragmentManager());
+
+        mViewPager = (ViewPager) v.findViewById(R.id.pager);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        courseList = new ArrayList<>();
+        eventList = new ArrayList<>();
+        clubList = new ArrayList<>();
+        committeeList = new ArrayList<>();
+
+        channelListAdapterCourse = new ChannelListAdapter(courseList,getActivity().getBaseContext());
+        channelListAdapterEvent = new ChannelListAdapter(eventList,getActivity().getBaseContext());
+        channelListAdapterClub = new ChannelListAdapter(clubList,getActivity().getBaseContext());
+        channelListAdapterCommittee = new ChannelListAdapter(committeeList,getActivity().getBaseContext());
+
+        //fetchHomeData(); need to be modified
+
+        return v;
+    }
+
+    private void fetchHomeData(){
+
+        httpGetAsyncTask = new HTTPGetAsyncTask(getActivity(),true);
+        httpGetAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Constants.URL_GET_ALL_CHANNELS+"?limit=10&offset=0");
+        httpGetAsyncTask.setHTTPCompleteListener(new OnHTTPCompleteListener() {
+            @Override
+            public void onHTTPDataReceived(String result, String url) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result).getJSONObject(Constants.Keys.ALL_CHANNELS);
+                    JSONArray jsonArrayCourse = jsonObject.getJSONArray(Constants.Keys.COURSE);
+                    JSONArray jsonArrayEvent = jsonObject.getJSONArray(Constants.Keys.EVENT);
+                    JSONArray jsonArrayClub = jsonObject.getJSONArray(Constants.Keys.CLUB);
+                    JSONArray jsonArrayCommittee = jsonObject.getJSONArray(Constants.Keys.COMMITTEE);
+                    for(int i=0;i<jsonArrayCourse.length();i++){
+                        ChannelItemDTO channelItemDTO = new Gson().fromJson(jsonArrayCourse.get(i).toString(), ChannelItemDTO.class);
+                        channelListAdapterCourse.mChannelList.add(channelItemDTO);
+                    }
+                    channelListAdapterCourse.notifyDataSetChanged();
+
+                    for(int i=0;i<jsonArrayEvent.length();i++){
+                        ChannelItemDTO channelItemDTO = new Gson().fromJson(jsonArrayEvent.get(i).toString(), ChannelItemDTO.class);
+                        channelListAdapterEvent.mChannelList.add(channelItemDTO);
+                    }
+                    channelListAdapterEvent.notifyDataSetChanged();
+
+                    for(int i=0;i<jsonArrayClub.length();i++){
+                        ChannelItemDTO channelItemDTO = new Gson().fromJson(jsonArrayClub.get(i).toString(), ChannelItemDTO.class);
+                        channelListAdapterClub.mChannelList.add(channelItemDTO);
+                    }
+                    channelListAdapterClub.notifyDataSetChanged();
+
+                    for(int i=0;i<jsonArrayCommittee.length();i++){
+                        ChannelItemDTO channelItemDTO = new Gson().fromJson(jsonArrayCommittee.get(i).toString(), ChannelItemDTO.class);
+                        channelListAdapterCommittee.mChannelList.add(channelItemDTO);
+                    }
+                    channelListAdapterCommittee.notifyDataSetChanged();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+
+    }
+
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment;
+            switch (position) {
+                case 0:
+                    fragment = new TabbedContentFragment(channelListAdapterCourse);
+                    break;
+                case 1:
+                    fragment = new TabbedContentFragment(channelListAdapterEvent);
+                    break;
+                case 2:
+                    fragment = new TabbedContentFragment(channelListAdapterClub);
+                    break;
+                case 3:
+                    fragment = new TabbedContentFragment(channelListAdapterCommittee);
+                    break;
+                default:
+                    fragment = null;
+                    break;
+            }
+
+            Bundle args = new Bundle();
+            args.putInt(TabbedContentFragment.ARG_SECTION_NUMBER, position + 1);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            return 4;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            Locale l = Locale.getDefault();
+            switch (position) {
+                case 0:
+                    return getString(R.string.title_section1).toUpperCase(l);
+                case 1:
+                    return getString(R.string.title_section2).toUpperCase(l);
+                case 2:
+                    return getString(R.string.title_section3).toUpperCase(l);
+                case 3:
+                    return getString(R.string.title_section4).toUpperCase(l);
+            }
+            return null;
+        }
+    }
+
+    public static class TabbedContentFragment extends Fragment {
+
+        public static final String ARG_SECTION_NUMBER = "section_number";
+
+        ChannelListAdapter channelListAdapter;
+
+        public TabbedContentFragment(ChannelListAdapter channelListAdapter) {
+            this.channelListAdapter = channelListAdapter;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_tabbed_content,
+                    container, false);
+
+            ListView channelListView = (ListView) rootView.findViewById(R.id.list_view);
+            channelListView.setAdapter(channelListAdapter);
+
+            channelListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    String channelID = channelListAdapter.mChannelList.get(position).getChannelID();
+                    String channelImgUrl = channelListAdapter.mChannelList.get(position).getImgUrl();
+                    Intent intent = new Intent(getActivity(),ChannelPostsActivity.class);
+                    intent.putExtra(Constants.Keys.CHANNEL_ID,channelID);
+                    intent.putExtra(Constants.Keys.CHANNEL_IMAGE_URL,channelImgUrl);
+                    startActivity(intent);
+                }
+            });
+
+            return rootView;
+        }
     }
 }
