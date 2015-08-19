@@ -57,6 +57,8 @@ public class Constants {
         public static final String SUCCESS = "200";
     }
 
+    public static final String GCM_SENDER_ID = "865174545789";
+
     public static final String CREATE_CHANNEL = "create_channel";
     public static final String EDIT_PROFILE = "edit_profile";
     public static final String PENDING_POSTS = "pending_posts";
