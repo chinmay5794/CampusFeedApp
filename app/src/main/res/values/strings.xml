@@ -11,6 +11,13 @@
         <item>WebView</item>
     </string-array>
 
+    <string-array name="branch_list">
+        <item>(select branch)</item>
+        <item>Branch1</item>
+        <item>Branch2</item>
+        <item>Branch3</item>
+        <item>Branch4</item>
+    </string-array>
 
     <string name="app_name">Campusfeed</string>
     <string name="action_settings">Settings</string>
@@ -134,7 +141,7 @@
     <string name="email">E-mail</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
-    <string name="department">Department</string>
+    <string name="branch">Branch</string>
     <string name="phone_number">Phone Number</string>
     <string name="college_id">College ID number</string>
     <string name="country">Country</string>

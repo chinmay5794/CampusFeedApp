@@ -2,6 +2,7 @@ package com.campusfeedapp.campusfeed;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -9,7 +10,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.campusfeedapp.campusfeed.CustomViews.FloatLabeledEditText;
@@ -36,32 +40,51 @@ public class SignupActivity extends ActionBarActivity {
     String imgDecodableString;
     String filepath;
     ByteArrayBody byteArrayBody;
+    Spinner branchListSpinner;
+    ArrayAdapter<String> arrAdptBranch;
+    int branch_sel_pos=0;
+    Bitmap photo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         firstNameEdt=(FloatLabeledEditText)findViewById(R.id.field1_signup);
         lastNameEdt=(FloatLabeledEditText)findViewById(R.id.field2_signup);
-        branchEdt=(FloatLabeledEditText)findViewById(R.id.field3_signup);
+        branchListSpinner=(Spinner)findViewById(R.id.field3_signup);
+        //branchEdt=(FloatLabeledEditText)findViewById(R.id.field3_signup);
         phoneNumberEdt=(FloatLabeledEditText)findViewById(R.id.field4_signup);
         emailEdt=(FloatLabeledEditText)findViewById(R.id.field5_signup);
         idNumEdt=(FloatLabeledEditText)findViewById(R.id.field6_signup);
         pswdEdt=(FloatLabeledEditText)findViewById(R.id.field7_signup);
+        arrAdptBranch=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item);
+        arrAdptBranch.addAll(getResources().getStringArray(R.array.branch_list));
+        branchListSpinner.setAdapter(arrAdptBranch);
+        branchListSpinner.setSelection(branch_sel_pos);
         signupBtn = (RobotoTextView)findViewById(R.id.submit_btn_signup);
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(firstNameEdt.getTextString().isEmpty()||lastNameEdt.getTextString().isEmpty()||
-                        branchEdt.getTextString().isEmpty()||phoneNumberEdt.getTextString().isEmpty()||
+                        (branch_sel_pos==0)||phoneNumberEdt.getTextString().isEmpty()||
                         emailEdt.getTextString().isEmpty()||idNumEdt.getTextString().isEmpty()||
                         pswdEdt.getTextString().isEmpty()){
                     Toast.makeText(getApplicationContext(),"Fields cannot be empty",Toast.LENGTH_SHORT).show();
                 }
-                new UploadFileToServer().execute();
-                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-                startActivity(intent);
+                else{
+                    new UploadFileToServer().execute();
+                    Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
             }
         });
+        photo= BitmapFactory.decodeResource(getResources(),R.drawable.default_img);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        photo.compress(Bitmap.CompressFormat.JPEG, 75, byteArrayOutputStream);
+        byte[] byteData = byteArrayOutputStream.toByteArray();
+        byteArrayBody = new ByteArrayBody(byteData, "image"); // second parameter is the name of the image (//TODO HOW DO I MAKE IT USE THE IMAGE FILENAME?)
+
         loadImgBtn = (RobotoTextView)findViewById(R.id.upload_btn_signup);
         loadImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +101,18 @@ public class SignupActivity extends ActionBarActivity {
                 galleryIntent.putExtra("outputY", 200);
                 // Start the Intent
                 startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+            }
+        });
+
+        branchListSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                branch_sel_pos=parent.getSelectedItemPosition();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
@@ -105,6 +140,8 @@ public class SignupActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -117,7 +154,6 @@ public class SignupActivity extends ActionBarActivity {
                 if (extras2 != null) {
                     ImageView imgView = (ImageView) findViewById(R.id.upload_imgview);
                     Bitmap photo = extras2.getParcelable("data");
-                    System.out.println(data.getData());
                     imgView.setImageBitmap(photo);
                     /*bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream); //compress to which format you want.
                     byte [] byte_arr = stream.toByteArray();
@@ -125,6 +161,7 @@ public class SignupActivity extends ActionBarActivity {
                     ArrayList<NameValuePair> nameValuePairs = new  ArrayList<NameValuePair>();
 
                     nameValuePairs.add(new BasicNameValuePair("image", image_str));*/
+                    //updateByteArrayBody();
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
                     photo.compress(Bitmap.CompressFormat.JPEG, 75, byteArrayOutputStream);
@@ -133,6 +170,7 @@ public class SignupActivity extends ActionBarActivity {
                     byteArrayBody = new ByteArrayBody(byteData, "image"); // second parameter is the name of the image (//TODO HOW DO I MAKE IT USE THE IMAGE FILENAME?)
 
                /* Uri selectedImage = data.getData();
+
                 File mf = new File(selectedImage.toString());
                 filepath = mf.getAbsolutePath();
                 String[] filePathColumn = { MediaStore.Images.Media.DATA };
@@ -163,9 +201,18 @@ public class SignupActivity extends ActionBarActivity {
 
     }
 
+    private void updateByteArrayBody() {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        photo.compress(Bitmap.CompressFormat.JPEG, 75, byteArrayOutputStream);
+        byte[] byteData = byteArrayOutputStream.toByteArray();
+        byteArrayBody = new ByteArrayBody(byteData, "image"); // second parameter is the name of the image (//TODO HOW DO I MAKE IT USE THE IMAGE FILENAME?)
+    }
+
     public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
 
         private  String TAG = getClass().getSimpleName().toString();
+        private String signupResponse;
         long totalSize = 100;
         @Override
         protected void onPreExecute() {
@@ -189,13 +236,15 @@ public class SignupActivity extends ActionBarActivity {
                 MultipartEntityBuilder builder = MultipartEntityBuilder.create();
                // File sourceFile = new File(filepath);
                // builder.addPart(Constants.Keys.USERIMAGE, new FileBody(sourceFile));
+               // updateByteArrayBody();
                 builder.addPart(Constants.Keys.USERIMAGE,byteArrayBody);
                 builder.addTextBody(Constants.Keys.USER_ID, idNumEdt.getText().toString());
                 builder.addTextBody(Constants.Keys.FIRST_NAME,firstNameEdt.getText().toString());
                 builder.addTextBody(Constants.Keys.LAST_NAME, lastNameEdt.getText().toString());
                 builder.addTextBody(Constants.Keys.EMAIL_ID, emailEdt.getText().toString());
                 builder.addTextBody(Constants.Keys.PASSWORD, pswdEdt.getText().toString());
-                builder.addTextBody(Constants.Keys.BRANCH, branchEdt.getText().toString());
+                builder.addTextBody(Constants.Keys.BRANCH, branchListSpinner.getSelectedItem().toString());
+                Log.e(TAG, branchListSpinner.getSelectedItem().toString());
                 builder.addTextBody(Constants.Keys.PHONE, phoneNumberEdt.getText().toString());
 
                 httppost.setEntity(builder.build());
@@ -234,15 +283,20 @@ public class SignupActivity extends ActionBarActivity {
                 int statusCode = response.getStatusLine().getStatusCode();
                 if (statusCode == 200) {
                     // Server response
-                    Toast.makeText(getApplicationContext(),"Account Created",Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),"Account Created",Toast.LENGTH_LONG).show();
+                    signupResponse="Account Created";
                     responseString = EntityUtils.toString(r_entity);
                 } else {
                     responseString = "Error occurred! Http Status Code: "
                             + statusCode;
+                    signupResponse=responseString;
+                    //Toast.makeText(getApplicationContext(),responseString,Toast.LENGTH_LONG).show();
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
+                signupResponse=e.toString();
+                //Toast.makeText(getApplicationContext(),"Error occured, sorry for the inconvenience",Toast.LENGTH_SHORT).show();
             }
             /*catch(ClientProtocolException e) {
                 responseString = e.toString();
@@ -250,6 +304,7 @@ public class SignupActivity extends ActionBarActivity {
                 responseString = e.toString();
             }*/
 
+            finish();
             return responseString;
 
         }
@@ -257,7 +312,7 @@ public class SignupActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(String result) {
             Log.e(TAG, "Response from server: " + result);
-
+            Toast.makeText(getApplicationContext(),signupResponse,Toast.LENGTH_LONG).show();
             super.onPostExecute(result);
         }
 
