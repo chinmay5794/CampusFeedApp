@@ -112,33 +112,24 @@ public class HomeFragment extends Fragment {
             public void onHTTPDataReceived(String result, String url) {
                 try {
                     JSONObject jsonObject = new JSONObject(result).getJSONObject(Constants.Keys.ALL_CHANNELS);
-                    JSONArray jsonArrayCourse = jsonObject.getJSONArray(Constants.Keys.COURSE);
-                    JSONArray jsonArrayEvent = jsonObject.getJSONArray(Constants.Keys.EVENT);
-                    JSONArray jsonArrayClub = jsonObject.getJSONArray(Constants.Keys.CLUB);
-                    JSONArray jsonArrayCommittee = jsonObject.getJSONArray(Constants.Keys.COMMITTEE);
-                    for(int i=0;i<jsonArrayCourse.length();i++){
-                        ChannelItemDTO channelItemDTO = new Gson().fromJson(jsonArrayCourse.get(i).toString(), ChannelItemDTO.class);
-                        channelListAdapterCourse.mChannelList.add(channelItemDTO);
+                    JSONArray jsonArray = jsonObject.getJSONArray(Constants.Keys.FOLLOWED_CHANNELS);
+                    for(int i=0; i<jsonArray.length(); i++){
+                        ChannelItemDTO channelItemDTO = new Gson().fromJson(jsonArray.get(i).toString(), ChannelItemDTO.class);
+                        switch (channelItemDTO.getChannelTag()){
+                            case Constants.Keys.COURSE:
+                                channelListAdapterCourse.mChannelList.add(channelItemDTO);
+                                break;
+                            case Constants.Keys.EVENT:
+                                channelListAdapterEvent.mChannelList.add(channelItemDTO);
+                                break;
+                            case Constants.Keys.COMMITTEE:
+                                channelListAdapterCommittee.mChannelList.add(channelItemDTO);
+                                break;
+                            case Constants.Keys.CLUB:
+                                channelListAdapterClub.mChannelList.add(channelItemDTO);
+                                break;
+                        }
                     }
-                    channelListAdapterCourse.notifyDataSetChanged();
-
-                    for(int i=0;i<jsonArrayEvent.length();i++){
-                        ChannelItemDTO channelItemDTO = new Gson().fromJson(jsonArrayEvent.get(i).toString(), ChannelItemDTO.class);
-                        channelListAdapterEvent.mChannelList.add(channelItemDTO);
-                    }
-                    channelListAdapterEvent.notifyDataSetChanged();
-
-                    for(int i=0;i<jsonArrayClub.length();i++){
-                        ChannelItemDTO channelItemDTO = new Gson().fromJson(jsonArrayClub.get(i).toString(), ChannelItemDTO.class);
-                        channelListAdapterClub.mChannelList.add(channelItemDTO);
-                    }
-                    channelListAdapterClub.notifyDataSetChanged();
-
-                    for(int i=0;i<jsonArrayCommittee.length();i++){
-                        ChannelItemDTO channelItemDTO = new Gson().fromJson(jsonArrayCommittee.get(i).toString(), ChannelItemDTO.class);
-                        channelListAdapterCommittee.mChannelList.add(channelItemDTO);
-                    }
-                    channelListAdapterCommittee.notifyDataSetChanged();
                 }
                 catch (Exception e) {
                     e.printStackTrace();

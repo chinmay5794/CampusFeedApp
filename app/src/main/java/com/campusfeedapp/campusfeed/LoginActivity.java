@@ -71,6 +71,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
             Intent intent = new Intent(LoginActivity.this,MainActivity.class);
             intent.putExtra(Constants.Keys.USER_ID,userId);
             startActivity(intent);
+            LoginActivity.this.finish();
         }
     }
 
@@ -136,6 +137,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra(Constants.Keys.USER_ID, etUserId.getText().toString());
                             startActivity(intent);
+                            LoginActivity.this.finish();
                         } catch (JSONException e) {
                             e.printStackTrace();
                             loginBtn.setEnabled(true);

@@ -5,11 +5,16 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.campusfeedapp.campusfeed.AsyncTasks.HTTPPostAsyncTask;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class GoogleServicesUtil {
@@ -99,6 +104,17 @@ public class GoogleServicesUtil {
 	public static void sendRegistrationIdToBackend(Activity activity,
 			Context context, String regId) {
 		//new SendGCMTask(activity, context).execute(regId);
+		SharedPreferences mPrefs = context.getSharedPreferences(Constants.SharedPrefs.USER_CREDENTIALS, Context.MODE_PRIVATE);
+		String userId = mPrefs.getString(Constants.Keys.USER_ID, "");
+		JSONObject jsonObject = new JSONObject();
+		try {
+			jsonObject.put(Constants.Keys.GCM_ID,regId);
+			jsonObject.put(Constants.Keys.USER_ID,userId);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		new HTTPPostAsyncTask(context,false).executeOnExecutor
+				(AsyncTask.THREAD_POOL_EXECUTOR,Constants.URL_GCM_NOTIFY_SERVER, jsonObject.toString());
 	}
 
 	/**

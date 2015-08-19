@@ -38,6 +38,17 @@ public class ChannelItemDTO {
     @SerializedName(Constants.Keys.LAST_NAME)
     private String lastName;
 
+    @SerializedName(Constants.Keys.CHANNEL_TAG)
+    private String channelTag;
+
+    public String getChannelTag() {
+        return channelTag;
+    }
+
+    public void setChannelTag(String channelTag) {
+        this.channelTag = channelTag;
+    }
+
     public String getLastName() {
         return lastName;
     }

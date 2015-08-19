@@ -47,6 +47,8 @@ public class Constants {
         public static final String EVENT = "event";
         public static final String CLUB = "club";
         public static final String COMMITTEE = "committee";
+        public static final String CHANNEL_TAG = "channel_tag";
+        public static final String GCM_ID = "gcm_id";
     }
 
     public class SharedPrefs {
@@ -80,6 +82,8 @@ public class Constants {
     public static final String URL_SIGNUP= URL_ROOT+"/signup";
     public static final String URL_USER_IMAGE = URL_ROOT + "/imageurl";
     public static final String URL_GET_ALL_CHANNELS = URL_ROOT + "/channels";
+    public static final String URL_GCM_NOTIFY_SERVER = URL_ROOT + "/pushnotif";
+    public static final String URL_LOGOUT = URL_ROOT + "/logout";
 
     public static String URL_GET_CHANNEL_DETAILS(String channelId) {
         return URL_GET_ALL_CHANNELS  + "/" + channelId;

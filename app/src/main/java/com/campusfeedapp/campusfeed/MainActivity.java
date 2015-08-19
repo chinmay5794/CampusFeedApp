@@ -1,6 +1,8 @@
 package com.campusfeedapp.campusfeed;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.content.res.Configuration;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -15,11 +17,16 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.campusfeedapp.campusfeed.Adapters.DrawerAdapter;
+import com.campusfeedapp.campusfeed.AsyncTasks.HTTPPostAsyncTask;
 import com.campusfeedapp.campusfeed.Fragments.DiscoverChannelsFragment;
 import com.campusfeedapp.campusfeed.Fragments.HomeFragment;
 import com.campusfeedapp.campusfeed.Fragments.MyChannelsFragment;
+import com.campusfeedapp.campusfeed.Interfaces.OnHTTPCompleteListener;
+import com.campusfeedapp.campusfeed.Utils.Constants;
 import com.campusfeedapp.campusfeed.Utils.GCMRegistrationTask;
 import com.campusfeedapp.campusfeed.Utils.GoogleServicesUtil;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +50,8 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
 
         if (GoogleServicesUtil.checkPlayServices(MainActivity.this)) {
-            //new GCMRegistrationTask(MainActivity.this,
-              //      getApplicationContext()).execute();
+            new GCMRegistrationTask(MainActivity.this,
+                    getApplicationContext()).execute();
         }
 
         initializeDrawerItemList();
@@ -175,6 +182,17 @@ public class MainActivity extends FragmentActivity {
                         .beginTransaction()
                         .replace(R.id.content_frame,myChannelsFragment,MyChannelsFragment.TAG).commit();
                 break;
+            case 4:
+                HTTPPostAsyncTask httpPostAsyncTask = new HTTPPostAsyncTask(this,true);
+                httpPostAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Constants.URL_LOGOUT,new JSONObject().toString());
+                httpPostAsyncTask.setHTTPCompleteListener(new OnHTTPCompleteListener() {
+                    @Override
+                    public void onHTTPDataReceived(String result, String url) {
+                        Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                        MainActivity.this.finish();
+                    }
+                });
 
         }
         mDrawerLayout.closeDrawer(mDrawerList);
